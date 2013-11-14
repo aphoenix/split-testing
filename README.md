@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Wordpress A/B split-testing
 
 ## wordpress plugin for split testing html elements with javascript
@@ -21,7 +20,7 @@ A plugin for A/B split-testing html elements with javascript.  JQuery is require
 	- This plugin does not load any external libraries.
 	- [jQuery Cookie](https://raw.github.com/carhartl/jquery-cookie/) is included in the `js/ab.js` file.
 	- You must load [jQuery](http://jquery.com/) in your wordpress theme to support the jQuery Cookie library.
-	- You can load and use any other javascript library you require for your theme and use that library in your A/B tests to manipulate DOM elements during tests.
+	- You can load and use any other javascript library you requgire for your theme and use that library in your A/B tests to manipulate DOM elements during tests.
 
 ## Google Analytics
 	- This plugin uses google analytics to store test data.
@@ -103,9 +102,3 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 > You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
-=======
-split-testing
-=============
-
-wordpress plugin for split testing
->>>>>>> 07542683062355d2c7f54aeea0c823a6d66de255
