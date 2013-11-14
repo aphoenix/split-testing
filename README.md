@@ -5,39 +5,39 @@
 A plugin for A/B split-testing html elements with javascript.  JQuery is required.
 
 ### Requirements
-	- General Wordpress Installation
-	- Google Analytics
-	- jQuery - available to your admin and client side
-	- ability to set file and folder permissions on your server
-	- Do not run more than 5 A/B tests per visitor session. Otherwise analytics data will be overwritten
+- General Wordpress Installation
+- Google Analytics
+- jQuery - available to your admin and client side
+- ability to set file and folder permissions on your server
+- Do not run more than 5 A/B tests per visitor session. Otherwise analytics data will be overwritten
 
 ### Installation
-	- Copy the files from this repo to your server directory `/wp-content/plugins/`
-	- In wp-admin, navigate to Plugins and activate 'A/B Split Testing'
+- Copy the files from this repo to your server directory `/wp-content/plugins/`
+- In wp-admin, navigate to Plugins and activate 'A/B Split Testing'
 
 ### Javascript
-	- After your first test is created, you must globably link to the plugin file `js/ab.js` in your wordpress theme.
-	- This plugin does not load any external libraries.
-	- [jQuery Cookie](https://raw.github.com/carhartl/jquery-cookie/) is included in the `js/ab.js` file.
-	- You must load [jQuery](http://jquery.com/) in your wordpress theme to support the jQuery Cookie library.
-	- You can load and use any other javascript library you requgire for your theme and use that library in your A/B tests to manipulate DOM elements during tests.
+- After your first test is created, you must globably link to the plugin file `js/ab.js` in your wordpress theme.
+- This plugin does not load any external libraries.
+- [jQuery Cookie](https://raw.github.com/carhartl/jquery-cookie/) is included in the `js/ab.js` file.
+- You must load [jQuery](http://jquery.com/) in your wordpress theme to support the jQuery Cookie library.
+- You can load and use any other javascript library you requgire for your theme and use that library in your A/B tests to manipulate DOM elements during tests.
 
 ### Google Analytics
-	- This plugin uses google analytics to store test data.
-	- Data stored is set with custom variables on session level events.
-	- Data stored is Test Name and Test Version
-	- It is up to you, the webmaster or analytics admin, to set the test goals in your analytics admin settings.
+- This plugin uses google analytics to store test data.
+- Data stored is set with custom variables on session level events.
+- Data stored is Test Name and Test Version
+- It is up to you, the webmaster or analytics admin, to set the test goals in your analytics admin settings.
 
 Here's further reading about Google Analytics [Custom Variables](https://developers.google.com/analytics/devguides/collection/gajs/gaTrackingCustomVariables), [Analytics Events](https://developers.google.com/analytics/devguides/collection/gajs/eventTrackerGuide), and [Analytics Goals](https://support.google.com/analytics/answer/1032415?hl=en).
 
 When a visitor views a page with a given test running, we use "Session Level" events to track the test view, because this ensures the test data will carry through the session to the conversion goal. [Read More Here](http://www.kaushik.net/avinash/hits-sessions-metrics-dimensions-web-analytics/)
 
 ### A/B Split Test
-	- All A/B tests are run by manipulating HTML/CSS DOM elements in your wordpress theme with javascript.
-	- Depending on how many versions you are testing, all site traffic will by split to show each version evenly.
-	- When a test version is run, the javascript you defined in the plugin will execute show that variation to the user.
-	- No Server-Side scripting is used.
-	- Any javascript library can be used in your A/B Test, given that you have loaded the library in your wordpress theme.
+- All A/B tests are run by manipulating HTML/CSS DOM elements in your wordpress theme with javascript.
+- Depending on how many versions you are testing, all site traffic will by split to show each version evenly.
+- When a test version is run, the javascript you defined in the plugin will execute show that variation to the user.
+- No Server-Side scripting is used.
+- Any javascript library can be used in your A/B Test, given that you have loaded the library in your wordpress theme.
 
 ### Running An A/B Split Test
 
@@ -74,9 +74,9 @@ if ( $('button.test_button').length > 0 ) {
 ```
 
 ### analytics = true;
-	- It is up to you to correctly and logicaly set the `analytics=true` flag in your javascript code.
-	- If you forget to set it to true, no test results (custom variables) will show up in analytics.
-	- If you set it to true in every test, without checking for test page level DOM elements, you send invalid test data on every page load.
+- It is up to you to correctly and logicaly set the `analytics=true` flag in your javascript code.
+- If you forget to set it to true, no test results (custom variables) will show up in analytics.
+- If you set it to true in every test, without checking for test page level DOM elements, you send invalid test data on every page load.
 
 #### Test Results
 You will find your test data located in Google Analytics Custom Variables Reporting.
