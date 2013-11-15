@@ -226,7 +226,8 @@ class af_split_test_ajax_requests {
 		if ( $stop > 0 )
 			$update['time_stop'] = $stop;
 
-		$test_id = $this->update_test_option( $test_name, $update )['id'];
+		$test_id = $this->update_test_option( $test_name, $update );
+		$test_id = $test_id['id'];
 
 		$this->update_option_test_id_status( 'remove', $this->tests_active_ids, $test_id );
 		$this->update_option_test_id_status( 'remove', $this->tests_stop_ids, $test_id );
@@ -267,7 +268,8 @@ class af_split_test_ajax_requests {
 		if ( $stop > 0 )
 			$update['time_stop'] = $stop;
 
-		$test_id = $this->update_test_option( $test_name, $update )['id'];
+		$test_id = $this->update_test_option( $test_name, $update );
+		$test_id = $test_id['id'];
 
 		$this->update_option_test_id_status( 'add', $this->tests_stop_ids, $test_id );
 		$this->update_option_test_id_status( 'remove', $this->tests_active_ids, $test_id );
