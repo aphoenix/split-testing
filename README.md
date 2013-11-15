@@ -46,7 +46,7 @@ A plugin for A/B split-testing HTML/CSS/DOM elements with javascript.  Wordpress
 
 Here's further reading about Google Analytics [Custom Variables](https://developers.google.com/analytics/devguides/collection/gajs/gaTrackingCustomVariables), [Analytics Events](https://developers.google.com/analytics/devguides/collection/gajs/eventTrackerGuide), and [Analytics Goals](https://support.google.com/analytics/answer/1032415?hl=en).
 
-When a visitor views a page with a given test running, we use "Session Level" events to track the test view, because this ensures the test data will carry through the session to the conversion goal. [Read More Here](http://www.kaushik.net/avinash/hits-sessions-metrics-dimensions-web-analytics/)
+When a visitor views a page with a given test running, we use "Session Level" events to track the test view, because this ensures the test data will carry through the session to the conversion goal. From what I understand, "Page Level" custom variables will not work because we are firing an event after page load. Therefore, because the event is fired in the middle of a session, we must use session level custom variables [Read More Here](http://www.kaushik.net/avinash/hits-sessions-metrics-dimensions-web-analytics/)
 
 #### A/B Split Test
 - All A/B tests are run by manipulating HTML/CSS DOM elements in your wordpress theme with javascript.
