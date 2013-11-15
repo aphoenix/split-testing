@@ -2,31 +2,37 @@
 
 #### Description
 
-A plugin for A/B split-testing html elements with javascript.  JQuery is required.
+A plugin for A/B split-testing HTML/CSS/DOM elements with javascript.  Wordpress, JQuery, and Google Analytics are required.
 
 #### Requirements
 - General Wordpress Installation
 - Google Analytics
-- jQuery - available to your admin and client side
+- jQuery - available to your wp-admin and client side
 - ability to set file and folder permissions on your server
-- Do not run more than 5 A/B tests per visitor session. Otherwise analytics data will be overwritten
+- Do not run more than 5 A/B tests per visitor session. Otherwise analytics data will be overwritten or lost
+- Cache control of file `js/ab.js`. This file is rewritten and updated often, so make sure you can update cached versions of this file.
 
 #### Installation
 - Copy the files from this repo to your server directory `/wp-content/plugins/`
 - In wp-admin, navigate to Plugins and activate 'A/B Split Testing'
+- set server `/js/` directory permissions to 0755 or 0775. Diretory must be writable by PHP
+- set server `/js/ab.js` file permissions to 0755 or 0775. File must be writable by PHP
 
 #### Javascript
 - After your first test is created, you must globably link to the plugin file `js/ab.js` in your wordpress theme.
 - This plugin does not load any external libraries.
 - [jQuery Cookie](https://raw.github.com/carhartl/jquery-cookie/) is included in the `js/ab.js` file.
 - You must load [jQuery](http://jquery.com/) in your wordpress theme to support the jQuery Cookie library.
-- You can load and use any other javascript library you requgire for your theme and use that library in your A/B tests to manipulate DOM elements during tests.
+- You can load and use any other javascript library you require for your theme and use that library in your A/B tests to manipulate DOM elements during tests.
 
 #### Google Analytics
 - This plugin uses google analytics to store test data.
-- Data stored is set with custom variables on session level events.
 - Data stored is Test Name and Test Version
-- It is up to you, the webmaster or analytics admin, to set the test goals in your analytics admin settings.
+- `_setCustomVar()` is called just before firing `_trackEvent()` to store test data.
+- Custom Variable applied to event `_gaq.push(['_setCustomVar', 'Slot', 'AB: ' + 'Test Name', 'Version Name', 2]);` Slot = Test Index
+- Event sent `_gaq.push(['_trackEvent', 'AB Testing', 'Test View', 'Test Name & Version']);`
+- Goals: It is up to you, the webmaster or analytics admin, to set the test goals in your analytics admin settings.
+- Do not run more than 5 A/B tests per visitor session. Otherwise analytics data will be overwritten or lost
 
 Here's further reading about Google Analytics [Custom Variables](https://developers.google.com/analytics/devguides/collection/gajs/gaTrackingCustomVariables), [Analytics Events](https://developers.google.com/analytics/devguides/collection/gajs/eventTrackerGuide), and [Analytics Goals](https://support.google.com/analytics/answer/1032415?hl=en).
 
@@ -34,38 +40,43 @@ When a visitor views a page with a given test running, we use "Session Level" ev
 
 #### A/B Split Test
 - All A/B tests are run by manipulating HTML/CSS DOM elements in your wordpress theme with javascript.
-- Depending on how many versions you are testing, all site traffic will by split to show each version evenly.
-- When a test version is run, the javascript you defined in the plugin will execute show that variation to the user.
+- Depending on how many versions you are testing, all site traffic will by split evenly to show each test version.
+- When a test version is run, the javascript you defined in the plugin admin will execute and show that variation to the user.
 - No Server-Side scripting is used.
 - Any javascript library can be used in your A/B Test, given that you have loaded the library in your wordpress theme.
 
 #### Running An A/B Split Test
 
-After you have installed the plugin, in the wordpress admin, navigate to `AB Testing` and click `Create New Test`. Enter Test Name, each test Version's Name, and enter your custom javascript in `Version Code` and click `Save Test`. When you are ready to start your test, click the checkbox `Active`, which will write your new test to the `js/ab.js` file and make your test live to your site visitors.
+After you have installed the plugin, in the wordpress admin, navigate to `AB Testing` and click `Create New Test`. Enter Test Name, each test Version's Name, and enter your custom javascript in `Version Code` and click `Save Test`. Be sure to include your `analytics=true` in all of your test version code snippets.
 
-Be sure to include your `analytics=true` in all of your test version code snippets.
+Make sure your server `/js/` directory and file `/js/ab.js` have permissions 0755 or 0775 so PHP can write output to the `ab.js` file.
+
+When you are ready to start your test, click the checkbox `Active`, which will write your new test to the `js/ab.js` file and make your test live to your site visitors.
+
+And don't forget to update any cached versions of `js/ab.js`.
 
 #### Example Test Version Code
 
-First, decide what elements in your theme/HTML you want to test.  Because your `js/ab.js` file is included globably into your theme, your test code will manipulate any DOM element it finds.
+First, decide what elements in your theme HTML you want to test.  Because your `js/ab.js` file is included globably into your theme, your A/B test code will manipulate any DOM elements that meet its conditions.
 
-Therefore, do not run tests on general elements like `<h1>` or `<button>` unless you want to test these changes sitewide.  It better to be highly specific and target your DOM elements with Ids and Classes.
+Therefore, do not run tests on general elements like `<h1>` or `<button>` unless you want to test these changes sitewide.  It is better to be highly specific and target your DOM elements with IDs and Classes.
 
 Also, you must remember to include the `analytics=true` flag in your javascript code.
 
-Here's how we would test the color of `<button class="test_button">Add To Cart</button>` from green to orange.  Let's assume our `button` is already green in our current theme.  Therefore, this is our control version.
+Here's how we would test changing the color of `<button class="test_button">Add To Cart</button>` from green to orange.  Let's assume our `button` is already green in our current theme.  Therefore, green is our control version.
 
-However, even though we don't need to change the color for version 1 since it's already green, we must still check to see if `$('button.test_button')` exsists in the DOM, and if so, trigger the `analytics=true` flag to send our Custom Variable data to google analtyics.
+However, since we don't need to change the color for version 1, because it's already green, we must still check to see if `$('button.test_button')` exsists in the DOM, and if so, trigger the `analytics=true` flag to send our Custom Variable data to google analtyics.
 
-Version Code 1
+##### Version Code 1
 ```Javascipt
 if ( $('button.test_button').length > 0 ) {
 	analytics = true;
 }
 ```
+##### Version Code 2
+
 In version 2 we are changing the color to orange. Once again, we must check if `$('button.test_button')` exsists in the DOM.  If it does, we change the button color to orange and trigger the `analytics=true` flag.
 
-Version Code 2
 ```Javascipt
 if ( $('button.test_button').length > 0 ) {
 	$('button.test_button').css('background-color', 'orange');
@@ -75,8 +86,8 @@ if ( $('button.test_button').length > 0 ) {
 
 #### analytics = true;
 - It is up to you to correctly and logicaly set the `analytics=true` flag in your javascript code.
-- If you forget to set it to true, no test results (custom variables) will show up in analytics.
-- If you set it to true in every test, without checking for test page level DOM elements, you send invalid test data on every page load.
+- If you forget to set it to true, no test results (custom variables) will be sent to analytics.
+- If you set it to true in every test, without checking for test page level DOM elements, you will send invalid test data on every page load.
 
 #### Test Results
 You will find your test data located in Google Analytics Custom Variables Reporting.
