@@ -4,6 +4,14 @@
 
 A plugin for A/B split-testing HTML/CSS/DOM elements with javascript.  Wordpress, JQuery, and Google Analytics are required.
 
+- Test changes to your site with Javascript
+- Run up to 5 tests simultaneously (per vistor session)
+- Unlimited versions per test
+- Test info is saved in cookies so returning visitors see the same version of your site
+- Test data is sent to your google analytics account as custom varaiables
+- No AJAX. Test info and javascript code are served from static `ab.js` file
+- Test info/data is saved in the wordpress table `wp_options`
+
 #### Requirements
 - General Wordpress Installation
 - Google Analytics
@@ -17,6 +25,7 @@ A plugin for A/B split-testing HTML/CSS/DOM elements with javascript.  Wordpress
 - In wp-admin, navigate to Plugins and activate 'A/B Split Testing'
 - set server `/js/` directory permissions to 0755 or 0775. Diretory must be writable by PHP
 - set server `/js/ab.js` file permissions to 0755 or 0775. File must be writable by PHP
+- Test info/data is saved in the wordpress table `wp_options` with the prefix `_ABTEST_`
 
 #### Javascript
 - After your first test is created, you must globably link to the plugin file `js/ab.js` in your wordpress theme.
