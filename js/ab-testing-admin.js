@@ -82,18 +82,26 @@ var $ = jQuery,
 		this.setStopClick(tst);
 	},
 
+	/*
+		add cloned cell wrappers back into DOM based on number of tests
+		@param object test data
+		@return null
+	*/
 	buildTableCells: function(tst) {
 		for (var i = 0; i < tst.length; i++) {
 			this.testTable.append(this.cellWrap.clone());
 		}
-
 		this.cellWrap = this.testTable.find('div.cell_wrapper');
 	},
 
+	/*
+		add cloned version wrappers back into DOM
+		based on number versions in each test
+		@param object test data
+		@return null
+	*/
 	buildVersions: function(tst) {
-
 		$('div.version_wrap').remove();
-
 		for (var i = 0; i < tst.length; i++) {
 
 			for (var j = 0; j < tst[i].versions.length; j++) {
@@ -102,6 +110,11 @@ var $ = jQuery,
 		}
 	},
 
+	/*
+		on page load, set test names in test table
+		@param object test data
+		@return null
+	*/
 	setTestName: function(tst) {
 		var testName = this.testTable.find('p.test_name');
 		for (var i = 0; i < tst.length; i++) {
@@ -109,14 +122,11 @@ var $ = jQuery,
 		}
 	},
 
-	setTimeCreated: function(tst) {
-		var testName = this.testTable.find('p.time_created');
-
-		for (var i = 0; i < tst.length; i++) {
-			testName.eq(i).text(this.createDate(tst[i].time_created));
-		}
-	},
-
+	/*
+		on page load, set time started in test table
+		@param object test data
+		@return null
+	*/
 	setTimeStarted: function(tst) {
 		var testName = this.testTable.find('p.time_start'),
 			txt = '';
@@ -131,6 +141,11 @@ var $ = jQuery,
 		}	
 	},
 
+	/*
+		on page load, set time stopped in test table
+		@param object test data
+		@return null
+	*/
 	setTimeStoped: function(tst) {
 		var testName = this.testTable.find('p.time_stop'),
 			txt = '';
@@ -147,6 +162,12 @@ var $ = jQuery,
 		}	
 	},
 
+	/*
+		create date from integer
+		format MM/DD/YY
+		@param int unix time stamp 10 digit
+		@return string
+	*/
 	createDate: function(int) {
 		var dt = new Date(1000*int),
 			day = dt.getDate(),
@@ -156,12 +177,16 @@ var $ = jQuery,
 		return dt;
 	},
 
+	/*
+		on page load, set version names in test table
+		@param object test data
+		@return null
+	*/
 	setVersNames: function(tst) {
 		var versName = this.testTable.find('p.vers_name'),
 			vers_index = 0;
 
 		for (var i = 0; i < tst.length; i++) {
-
 			for (var j = 0; j < tst[i].versions.length; j++) {
 				versName.eq(vers_index).text(tst[i].versNames[j]);
 				vers_index++;
@@ -169,6 +194,11 @@ var $ = jQuery,
 		}
 	},
 
+	/*
+		on page load, set version code in test table
+		@param object test data
+		@return null
+	*/
 	setVersCode: function(tst) {
 		var versCode = this.testTable.find('textarea.version_code'),
 			vers_index = 0;
@@ -182,6 +212,14 @@ var $ = jQuery,
 		}
 	},
 
+	/*
+		on page load, set verion winner in test table
+		if tst[i].winner set to verion index, ie 1, 2, n
+		set checkbox to true to indicate winner has been
+		previously set
+		@param object test data
+		@return null
+	*/
 	setWinnerInput: function(tst) {
 		var wrappers = this.testTable.find('div.cell_wrapper'),
 			inputs = [],
@@ -200,6 +238,12 @@ var $ = jQuery,
 		}
 	},
 
+	/*
+		Apply bindings to set winner checkboxes. if clicked
+		or checked fire setWinner to make AJAX call to server
+		@param object test data
+		@return null
+	*/
 	setToggleWinner: function(tst) {
 		var winner = this.testTable.find('input.set_winner');
 
@@ -216,13 +260,15 @@ var $ = jQuery,
 
 			if (self[0].checked) {
 
-				// toggle checkboxes
+				// toggle all checkboxes in this test to false
 				for (var i = 0; i < siblings.length; i++) {
 					siblings[i].checked = false;
 				}
 
+				// toggle this checkbox back to true for UI feedback
 				self[0].checked = true;
 
+				// make AJAX call to server
 				ab.setWinner({
 					action: 'set',
 					test_index: parent_index,
@@ -241,6 +287,12 @@ var $ = jQuery,
 		});
 	},
 
+	/*
+		first confirm if user intends to send data to server
+		then send AJAX request
+		@param object test version data
+		@return boolean
+	*/
 	setWinner: function(w) {
 		var test_name = w.alltests[w.test_index].test_name,
 			vers_id = w.vers_index + 1,
@@ -267,8 +319,21 @@ var $ = jQuery,
 		}
 	},
 
+	/*
+		no callback used
+		@param response
+		@return null
+	*/
 	setWinnerCallback: function(r) {},
 
+	/*
+		Mark entire test as trash. this prevents the test from
+		showing up in admin again and deletes cookies client side in ab.js
+		first confirm if user intends to send data to server
+		then send AJAX request
+		@param object test data
+		@return boolean
+	*/
 	setTrashClick: function(tst) {
 		var trash = this.testTable.find('button.trash_this');
 
@@ -299,8 +364,18 @@ var $ = jQuery,
 		});
 	},
 
+	/*
+		no callback used
+		@param response
+		@return null
+	*/
 	setTrashCallback: function(r) {},
 
+	/*
+		on page load, set test active input in test table
+		@param object test data
+		@return null
+	*/
 	setActiveInput: function(tst) {
 		this.activeTest = this.testTable.find('input.test_active');
 		for (var i = 0; i < tst.length; i++) {
@@ -310,6 +385,14 @@ var $ = jQuery,
 		}
 	},
 
+	/*
+		Mark test as active or paused. This updates the ab.js file
+		and starts the test client side.
+		first confirm if user intends to send data to server
+		then send AJAX request
+		@param object test data
+		@return boolean
+	*/
 	setActiveClick: function(tst) {
 		var startDate = this.testTable.find('p.time_start');
 
@@ -350,8 +433,20 @@ var $ = jQuery,
 		});
 	},
 
+	/*
+		no callback used
+		@param response
+		@return null
+	*/
 	testActiveCallback: function(r) {},
 
+	/*
+		on page load, set test stop inputs in test table
+		disable all sibling inputs in test. Once a test stopped
+		you may not restart or modify the test
+		@param object test data
+		@return null
+	*/
 	setStopInput: function(tst) {
 		var allInputs = {};
 		this.stopTest = this.testTable.find('input.test_stop');
@@ -372,6 +467,16 @@ var $ = jQuery,
 		}
 	},
 
+	/*
+		Mark test as stopped. This updates the ab.js file
+		and stops the test client side.
+		disables all sibling inputs for test. Once a test is stopped
+		you may not restart or modify the test
+		first confirm if user intends to send data to server
+		then send AJAX request
+		@param object test data
+		@return boolean
+	*/
 	setStopClick: function(tst) {
 		var stopDate = this.testTable.find('p.time_stop');
 
@@ -417,6 +522,11 @@ var $ = jQuery,
 		});
 	},
 
+	/*
+		no callback used
+		@param response
+		@return null
+	*/
 	testStopCallback: function(r) {},
 
 	confirmAction: function(msg) {
@@ -427,6 +537,11 @@ var $ = jQuery,
 		return false;
 	},
 
+	/*
+		create new test button event
+		@param null
+		@return null
+	*/
 	newTestClick: function() {
 		this.newTest.click(function() {
 			ab.inputWrapper.css('display', 'block');
@@ -444,14 +559,17 @@ var $ = jQuery,
 		this.createInputs();
 		this.bindTestName();
 		this.bindVersionName();
-		this.populateVerName();
 		this.bindTestCode();
-		this.populateTestCode();
 		this.verSaveButtons();
 		this.deleteVers();
 		this.versionNums();
 	},
 
+	/*
+		use cloned elements to rebuild multiple test version inputs
+		@param null
+		@return null
+	*/
 	createInputs: function() {
 		this.newData.remove();
 
@@ -463,6 +581,11 @@ var $ = jQuery,
 		this.newData = $('#test_data div.new_data');
 	},
 
+	/*
+		bind test name inputs and events
+		@param null
+		@return null
+	*/
 	bindTestName: function() {
 		var testName = $('#test_name');
 		testName.unbind('change');
@@ -474,6 +597,13 @@ var $ = jQuery,
 		});
 	},
 
+	/*
+		test names must be unique. therefore, we must query
+		the db to check if name already exists. If it exsists,
+		throw error and tell user to create new name
+		@param string test name
+		@return event json callback
+	*/
 	exsitingNameCheck: function(n) {
 		ab.ajaxRequest({
 			url: pageLocalData.ajaxurl,
@@ -487,6 +617,11 @@ var $ = jQuery,
 		});
 	},
 
+	/*
+		set errors in object and show user error
+		@param ajax response
+		@return null
+	*/
 	exsitingNameCallback: function(r) {
 		var err = $('#test_name_error');
 		if (r[0]) {
@@ -498,6 +633,11 @@ var $ = jQuery,
 		}
 	},
 
+	/*
+		bind version name inputs and events
+		@param null
+		@return null
+	*/
 	bindVersionName: function() {
 		this.verName = this.testData.find('input.version_name');
 
@@ -509,13 +649,11 @@ var $ = jQuery,
 		});
 	},
 
-	populateVerName: function() {
-
-		for (var i = 0; i < this.tests.verName.length; i++) {
-			this.verName.eq(i).val(this.tests.verName[i]);
-		}
-	},
-
+	/*
+		bind test code inputs and events
+		@param null
+		@return null
+	*/
 	bindTestCode: function() {
 		this.codeInput = this.testData.find('textarea.code_input');
 
@@ -527,15 +665,13 @@ var $ = jQuery,
 		});
 	},
 
-	populateTestCode: function() {
-
-		for (var i = 0; i < this.tests.tstCode.length; i++) {
-			this.codeInput.eq(i).val(this.tests.tstCode[i]);
-		}
-	},
-
+	/*
+		Buttons "Add Version" and "Save Test" are appened to DOM
+		after version inputs have been created
+		@param null
+		@return null
+	*/
 	verSaveButtons: function() {
-
 		var html = '';
 
 		if (this.button_wrap.length > 0) {
@@ -568,6 +704,11 @@ var $ = jQuery,
 		this.bindSaveButtons();
 	},
 
+	/*
+		bind version and save buttons and events
+		@param null
+		@return null
+	*/
 	bindSaveButtons: function() {
 		this.testErrors = $('#new_test_errors');
 		this.button_wrap = $('#button_wrap');
@@ -591,6 +732,11 @@ var $ = jQuery,
 		});
 	},
 
+	/*
+		check for errors upon saveTest.Click()
+		@param null
+		@return null
+	*/
 	noInputErrors: function() {
 		for (key in this.inputErrors) {
 			if (this.inputErrors[key]) {
@@ -600,6 +746,11 @@ var $ = jQuery,
 		return true;
 	},
 
+	/*
+		save all test data to server
+		@param object test data
+		@return event json callback
+	*/
 	saveTestData: function(tests) {
 		tests = JSON.stringify(tests);
 		ab.ajaxRequest({
@@ -614,11 +765,22 @@ var $ = jQuery,
 		});
 	},
 
+	/*
+		ajax call back after saving test data and reload page
+		to populate all active and stopped tests in UI
+		@param object ajax resonse
+		@return null
+	*/
 	saveTestDataCallback: function(r) {
 		ab.inputWrapper.css('display', 'none');
 		window.location.reload(true);
 	},
 
+	/*
+		bind delete version buttons and events
+		@param null
+		@return null
+	*/
 	deleteVers: function() {
 		var delVer = this.testData.find('button.delete_ver');
 
@@ -632,6 +794,11 @@ var $ = jQuery,
 		});
 	},
 
+	/*
+		populate version numbers
+		@param null
+		@return null
+	*/
 	versionNums: function() {
 		var nums = this.testData.find('span.ver_num');
 

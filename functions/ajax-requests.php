@@ -35,6 +35,11 @@ class af_split_test_ajax_requests {
 		add_action( 'wp_ajax_set_test_stop', array( $this, 'set_test_stop' ) );
 	}
 
+	/*
+		Test names must be unique, so check if test name is already stored in wp_options as option_name
+		@param post string test name
+		@return json boolean
+	*/
 	public function exsiting_name_check() {
 
 		if ( ! check_ajax_referer( 'z8fgmA6UxmSE6yQY', 'nonce' ) )
@@ -57,6 +62,11 @@ class af_split_test_ajax_requests {
         die('');
 	}
 
+	/*
+		upload all test data to wp_options
+		@param post string test data in json form
+		@return null
+	*/
 	public function upload_test_data() {
 
 		if ( ! check_ajax_referer( 'z8fgmA6UxmSE6yQY', 'nonce' ) )
@@ -90,6 +100,11 @@ class af_split_test_ajax_requests {
 
 	}
 
+	/*
+		get all active and stopped tests
+		@param null
+		@return json string with all test data
+	*/
 	public function get_all_tests() {
 
 		if ( ! check_ajax_referer( 'z8fgmA6UxmSE6yQY', 'nonce' ) )
@@ -106,6 +121,13 @@ class af_split_test_ajax_requests {
         die('');
 	}
 
+	/*
+		set test version winner
+		@param post string/integer used to determin if setting or unsetting winner
+		@param post string test name
+		@param post string/integer version index
+		@return null
+	*/
 	public function set_version_winner() {
 
 		if ( ! check_ajax_referer( 'z8fgmA6UxmSE6yQY', 'nonce' ) )
@@ -136,6 +158,13 @@ class af_split_test_ajax_requests {
         die('');
 	}
 
+	/*
+		set test to active or paused state
+		@param post string/integer used to determin if setting or unsetting active
+		@param post string/integer start time
+		@param post string test name
+		@return null
+	*/
 	public function set_test_active() {
 
 		if ( ! check_ajax_referer( 'z8fgmA6UxmSE6yQY', 'nonce' ) )
@@ -172,6 +201,12 @@ class af_split_test_ajax_requests {
         die('');
 	}
 
+	/*
+		set test to trash which ends test and no longer show test in admin
+		@param post string test name
+		@param post string/integer stop time
+		@return null
+	*/
 	public function set_trash_test() {
 
 		if ( ! check_ajax_referer( 'z8fgmA6UxmSE6yQY', 'nonce' ) )
@@ -206,6 +241,13 @@ class af_split_test_ajax_requests {
         die('');
 	}
 
+
+	/*
+		set test to stop which ends test, test will still show in admin
+		@param post string test name
+		@param post string/integer stop time
+		@return null
+	*/
 	public function set_test_stop() {
 
 		if ( ! check_ajax_referer( 'z8fgmA6UxmSE6yQY', 'nonce' ) )
@@ -240,6 +282,15 @@ class af_split_test_ajax_requests {
         die('');
 	}
 
+	/*
+		upon update of set_test_active(), set_version_winner(), set_trash_test(), or set_test_stop()
+		this function is run, which gets test data from wp_options, prepares if for output, and prints
+		the output to js/ab.js.
+		Make sure your server `/js/` directory and file `/js/ab.js` have permissions 0755 or 0775
+		so PHP can write output to the `ab.js` file.
+		@param
+		@return
+	*/
 	private function create_production_ab_js_file() {
 
 		$tests = $this->get_active_tests();
@@ -247,10 +298,13 @@ class af_split_test_ajax_requests {
 		$tests = $this->set_active_stop_boolean( $tests );
 		$tests = $this->tests_json_output( $tests );
 		$this->create_production_js_file( $tests );
-
-		return TRUE;
 	}
 
+	/*
+		remove meta items that are not needed for production JS
+		@param array test data
+		@return array test data
+	*/
 	private function remove_meta_items( $tests ) {
 
 		for ( $i = 0; $i < count( $tests ); $i++ ) {
@@ -271,6 +325,11 @@ class af_split_test_ajax_requests {
 		return $tests;
 	}
 
+	/*
+		convert 1 and 0's to boolean
+		@param array test data
+		@return array test data
+	*/
 	private function set_active_stop_boolean( $tests ) {
 
 		for ( $i = 0; $i < count( $tests ); $i++ ) {
@@ -291,6 +350,16 @@ class af_split_test_ajax_requests {
 		return $tests;
 	}
 
+	/*
+		#1 itereate over tests
+		#2 remove \r \n and \t from javascript
+		#3 store only version code itself, and not version meta data in output array
+		#4 store only version name and not meta data in output
+		#5 json_encode test data
+		#6 escape single quotes which may be in javascript
+		@param array test data
+		@return string json test data
+	*/
 	private function tests_json_output( $tests ) {
 
 		// convert double quotes to single quotes before printing JSON
@@ -330,10 +399,16 @@ class af_split_test_ajax_requests {
 		// escape single quotes
 		$tests = preg_replace( "/\'/", "\\'", $tests );
 
-
 		return $tests;
 	}
 
+	/*
+		#1 get and check if js/ab-testing-base.js file exsists
+		#2 get and check if js/ab.js file exsists
+		#3 combine both files for output
+		@param string json test data
+		@return null
+	*/
 	private function create_production_js_file( $tests ) {
 
 		$js_dir = $this->get_plugin_js_directory( $this->directory_js );
@@ -356,6 +431,17 @@ class af_split_test_ajax_requests {
 		return plugin_dir_path( __DIR__ ) . $js_dir;
 	}
 
+	/*
+		#1 enclose json test data in JS function af_split_testing.init()
+		#2 open js/ab-testing-base.js and concatinate #1 to string
+		#3 output #2 string to js/ab.js
+		Make sure your server `/js/` directory and file `/js/ab.js` have permissions 0755 or 0775
+		so PHP can write output to the `ab.js` file.
+		@param string js/ab-testing-base.js
+		@param string js/ab.js
+		@param string json test data
+		@return null
+	*/
 	private function merge_base_print_file( $js_base_file, $js_print_file, $tests ) {
 
 		$js = "try { af_split_testing.init('";
