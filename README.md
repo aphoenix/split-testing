@@ -38,7 +38,7 @@ A plugin for A/B split-testing HTML/CSS/DOM elements with javascript.  Wordpress
 - This plugin uses google analytics to store test data.
 - Data stored is Test Name and Test Version
 - `_setCustomVar()` is called just before firing `_trackEvent()` to store test data.
-- Custom Variable applied to event `_gaq.push(['_setCustomVar', 'Slot', 'AB: ' + 'Test Name', 'Version Name', 2]);` Slot = Test Index
+- Custom Variable applied to track event `_gaq.push(['_setCustomVar', 'Slot', 'AB: ' + 'Test Name', 'Version Name', 2]);` Slot = Test Index
 - Event sent `_gaq.push(['_trackEvent', 'AB Testing', 'Test View', 'Test Name & Version']);`
 - Goals: It is up to you, the webmaster or analytics admin, to set the test goals in your analytics admin settings.
 - Do not run more than 5 A/B tests per visitor session. Otherwise analytics data will be overwritten or lost
@@ -56,7 +56,7 @@ When a visitor views a page with a given test running, we use "Session Level" ev
 
 #### Running An A/B Split Test
 
-After you have installed the plugin, in the wordpress admin, navigate to `AB Testing` and click `Create New Test`. Enter Test Name, each test Version's Name, and enter your custom javascript in `Version Code` and click `Save Test`. Be sure to include your `analytics=true` in all of your test version code snippets.
+After you have installed the plugin, in the wordpress admin, navigate to `AB Testing` and click `Create New Test`. Enter Test Name, each test Version's Name, and enter your custom javascript in `Version Code` and click `Save Test`. Be sure to include your `analytics=true` flag in all of your test version code snippets.
 
 Make sure your server `/js/` directory and file `/js/ab.js` have permissions 0755 or 0775 so PHP can write output to the `ab.js` file.
 
@@ -72,9 +72,11 @@ Therefore, do not run tests on general elements like `<h1>` or `<button>` unless
 
 Also, you must remember to include the `analytics=true` flag in your javascript code.
 
-Here's how we would test changing the color of `<button class="test_button">Add To Cart</button>` from green to orange.  Let's assume our `button` is already green in our current theme.  Therefore, green is our control version.
+##### Example
 
-However, since we don't need to change the color for version 1, because it's already green, we must still check to see if `$('button.test_button')` exsists in the DOM, and if so, trigger the `analytics=true` flag to send our Custom Variable data to google analtyics.
+This is how we would test changing the color of `<button class="test_button">Add To Cart</button>` from green to orange.  Let's assume our `button.test_button` is already green in our current theme.  Therefore, green is our control version.
+
+However, since we don't need to change the color for version 1, because it's already green, we must still check to see if `$('button.test_button')` exsists in the DOM, and if so, trigger the `analytics=true` flag to send our Custom Variable data to google analtyics for the control version.
 
 ##### Version Code 1
 ```Javascipt
@@ -94,12 +96,14 @@ if ( $('button.test_button').length > 0 ) {
 ```
 
 #### analytics = true;
+- do not override or re-declare the `analytics` variable. It must be available to the `ab.js` file scope and set to true.
 - It is up to you to correctly and logicaly set the `analytics=true` flag in your javascript code.
 - If you forget to set it to true, no test results (custom variables) will be sent to analytics.
-- If you set it to true in every test, without checking for test page level DOM elements, you will send invalid test data on every page load.
+- If you set it to true in every test, without checking for test page level DOM elements, you will send invalid test data on every website page load.
 
 #### Test Results
 You will find your test data located in Google Analytics Custom Variables Reporting.
+
 Report Navigation: Audience -> Custom -> Custom Variables
 
 #### Custom Variables Report
