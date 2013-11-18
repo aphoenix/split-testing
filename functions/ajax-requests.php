@@ -446,7 +446,7 @@ class af_split_test_ajax_requests {
 	*/
 	private function merge_base_print_file( $js_base_file, $js_print_file, $tests ) {
 
-		$js = "try { af_split_testing.init('";
+		$js = "try { ab.init('";
 		$js .= $tests;
 		$js .= "') } catch (e) {} });";
 
