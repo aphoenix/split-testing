@@ -42,7 +42,7 @@ class af_split_test_ajax_requests {
 	*/
 	public function exsiting_name_check() {
 
-		if ( ! check_ajax_referer( 'z8fgmA6UxmSE6yQY', 'nonce' ) )
+		if ( ! check_ajax_referer( ABST_SPLIT_TEST_NONCE, 'nonce' ) )
 			die('');
 
 		$name = ( isset( $_POST['name'] ) && $_POST['name'] != '' ) ? $_POST['name'] : FALSE;
@@ -69,7 +69,7 @@ class af_split_test_ajax_requests {
 	*/
 	public function upload_test_data() {
 
-		if ( ! check_ajax_referer( 'z8fgmA6UxmSE6yQY', 'nonce' ) )
+		if ( ! check_ajax_referer( ABST_SPLIT_TEST_NONCE, 'nonce' ) )
 			die('');
 
 		$tests = ( isset( $_POST['tests'] ) && $_POST['tests'] != '' ) ? $_POST['tests'] : FALSE;
@@ -107,7 +107,7 @@ class af_split_test_ajax_requests {
 	*/
 	public function get_all_tests() {
 
-		if ( ! check_ajax_referer( 'z8fgmA6UxmSE6yQY', 'nonce' ) )
+		if ( ! check_ajax_referer( ABST_SPLIT_TEST_NONCE, 'nonce' ) )
 			die('');
 
 		$tests = $this->get_active_tests();
@@ -130,7 +130,7 @@ class af_split_test_ajax_requests {
 	*/
 	public function set_version_winner() {
 
-		if ( ! check_ajax_referer( 'z8fgmA6UxmSE6yQY', 'nonce' ) )
+		if ( ! check_ajax_referer( ABST_SPLIT_TEST_NONCE, 'nonce' ) )
 			die('');
 
 		$winner = ( isset( $_POST['winner'] ) && ctype_digit( $_POST['winner'] ) ) ? (int) $_POST['winner'] : FALSE;
@@ -167,7 +167,7 @@ class af_split_test_ajax_requests {
 	*/
 	public function set_test_active() {
 
-		if ( ! check_ajax_referer( 'z8fgmA6UxmSE6yQY', 'nonce' ) )
+		if ( ! check_ajax_referer( ABST_SPLIT_TEST_NONCE, 'nonce' ) )
 			die('');
 
 		$active = ( isset( $_POST['test_active'] ) && ctype_digit( $_POST['test_active'] ) ) ? (int) $_POST['test_active'] : FALSE;
@@ -209,7 +209,7 @@ class af_split_test_ajax_requests {
 	*/
 	public function set_trash_test() {
 
-		if ( ! check_ajax_referer( 'z8fgmA6UxmSE6yQY', 'nonce' ) )
+		if ( ! check_ajax_referer( ABST_SPLIT_TEST_NONCE, 'nonce' ) )
 			die('');
 
 		$test_name = isset( $_POST['test_name'] ) ? $_POST['test_name'] : FALSE;
@@ -251,7 +251,7 @@ class af_split_test_ajax_requests {
 	*/
 	public function set_test_stop() {
 
-		if ( ! check_ajax_referer( 'z8fgmA6UxmSE6yQY', 'nonce' ) )
+		if ( ! check_ajax_referer( ABST_SPLIT_TEST_NONCE, 'nonce' ) )
 			die('');
 
 		$test_name = isset( $_POST['test_name'] ) ? $_POST['test_name'] : FALSE;

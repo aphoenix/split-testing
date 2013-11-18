@@ -9,6 +9,9 @@ License: GPL-2.0+
 License URI: LICENSE.txt
 */
 
+if ( ! defined( 'ABST_SPLIT_TEST_NONCE' ) )
+	define( 'ABST_SPLIT_TEST_NONCE', 'z8fgmA6UxmSE6yQY' );
+
 // create admin_menu item
 include( 'functions/split-testing-menu.php' );
 

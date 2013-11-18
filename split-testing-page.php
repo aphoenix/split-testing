@@ -96,6 +96,6 @@
 <script>
 	var pageLocalData = {
 		ajaxurl: '<?php echo site_url() . "/wp-admin/admin-ajax.php" ?>', 
-		nonce: '<?php echo wp_create_nonce( "z8fgmA6UxmSE6yQY" ); ?>'
+		nonce: '<?php echo wp_create_nonce( ABST_SPLIT_TEST_NONCE ); ?>'
 	};
 </script>
