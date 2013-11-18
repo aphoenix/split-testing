@@ -17,7 +17,6 @@ var ab = {
 	tests: [],
 	idVers: [],
 	vers: [],
-	nTests: 1,
 
 	init: function(data) {
 
@@ -185,11 +184,7 @@ var ab = {
 	},
 
 	fireAnalytics: function(tst, vers) {
-		if (this.nTests <= 5 ) {			
-			_gaq.push(['_setCustomVar', this.nTests, 'AB: ' + tst.test_name, tst.versNames[vers - 1], 2]);
-			_gaq.push(['_trackEvent', 'AB Testing', 'Test View', tst.test_name + ' - ' + tst.versNames[vers - 1]]);			
-		}
-
-		this.nTests++;
+		_gaq.push(['_setCustomVar', vers, 'AB: ' + tst.test_name, tst.versNames[vers - 1], 2]);
+		_gaq.push(['_trackEvent', 'AB Testing', 'Test View', tst.test_name + ' - ' + tst.versNames[vers - 1]]);
 	}
 };
