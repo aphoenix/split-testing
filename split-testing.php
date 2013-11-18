@@ -10,7 +10,7 @@ License URI: LICENSE.txt
 */
 
 if ( ! defined( 'ABST_SPLIT_TEST_NONCE' ) )
-	define( 'ABST_SPLIT_TEST_NONCE', 'z8fgmA6UxmSE6yQY' );
+	define( 'ABST_SPLIT_TEST_NONCE', 'AddYourUniqueNonceHere' );
 
 // create admin_menu item
 include( 'functions/split-testing-menu.php' );
