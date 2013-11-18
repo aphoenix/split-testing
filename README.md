@@ -50,7 +50,7 @@ When a visitor views a page with a given test running, we use "Session Level" ev
 
 #### A/B Split Test
 - All A/B tests are run by manipulating HTML/CSS DOM elements in your wordpress theme with javascript.
-- Depending on how many versions you are testing, all site traffic will by split evenly to show each test version.
+- Depending on how many versions you are testing, all site traffic will be split evenly to show each test version.
 - When a test version is run, the javascript you defined in the plugin admin will execute and show that variation to the user.
 - No Server-Side scripting is used.
 - Any javascript library can be used in your A/B Test, given that you have loaded the library in your wordpress theme.
