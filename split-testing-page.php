@@ -28,7 +28,7 @@
 						<button class="tiny secondary delete_ver">Delete Version</button>
 					</div>
 					<div class="small-8 columns">				
-						<label>Version Code</label>
+						<label>Javascript Code</label>
 						<textarea class="code_input"></textarea>
 					</div>
 				</div>
