@@ -81,13 +81,13 @@ This is how we would test changing the color of `<button class="test_button">Add
 
 However, since we don't need to change the color for version 1, because it's already green, we must still check to see if `$('button.test_button')` exists in the DOM, and if so, trigger the `analytics=true` flag to send our Custom Variable data to google analytics for the control version.
 
-##### Version Code 1
+##### Version 1: Javascript Code
 ```javascript
 if ( $('button.test_button').length > 0 ) {
 	analytics = true;
 }
 ```
-##### Version Code 2
+##### Version 2: Javascript Code
 
 In version 2 we are changing the color to orange. Once again, we must check if `$('button.test_button')` exists in the DOM.  If it does, we change the button color to orange and trigger the `analytics=true` flag.
 
