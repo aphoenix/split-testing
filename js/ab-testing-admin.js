@@ -416,7 +416,9 @@ var $ = jQuery,
 			}
 
 			if (ab.confirmAction(msg)) {
-				startDate.eq(index).text(ab.createDate(d));
+				if (time_start === 0) {
+					startDate.eq(index).text(ab.createDate(d));
+				}
 				ab.ajaxRequest({
 					url: pageLocalData.ajaxurl,
 					data: {
@@ -499,13 +501,14 @@ var $ = jQuery,
 			}
 
 			if (ab.confirmAction(msg)) {
-
 				// disable all inputs for test
 				for (var i = 0; i < siblings.length; i++) {
 					siblings.eq(i)[0].disabled = true;
 				}
 				// update stop date
-				stopDate.eq(index).text(ab.createDate(d));
+				if (time_stop === 0) {
+					stopDate.eq(index).text(ab.createDate(d));
+				}
 
 				ab.ajaxRequest({
 					url: pageLocalData.ajaxurl,
